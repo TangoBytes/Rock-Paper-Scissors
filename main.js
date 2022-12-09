@@ -96,7 +96,3 @@ function game() {
 }
 
 game();
-
-// PAPER > ROCK
-// ROCK > SCISSORS
-// SCISSORS > PAPER
