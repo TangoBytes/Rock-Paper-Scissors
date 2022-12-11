@@ -5,13 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
-    <script type="text/javascript" src="main.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <script type="text/javascript" src="main.js" defer></script>
   </head>
   <body>
     <div id="box">
-      <img src="img/rock.png" alt="rock" width="300px" />
-      <img src="img/paper.png" alt="paper" width="300px" />
-      <img src="img/scissors.png" alt="scissors" width="300px" />
+      <button id="rock" class="icon-button material-icons md-48">
+        terrain
+      </button>
+      <button id="paper" class="icon-button material-icons md-48">
+        content_copy
+      </button>
+      <button id="scissors" class="icon-button material-icons md-48">
+        content_cut
+      </button>
+    </div>
+    <div id="scoreboard">
+      <div id="label" class="scoreboard-box">
+        <h1 id="player-score-label" class="score">Player</h1>
+        <h1 id="computer-score-label" class="score">Computer</h1>
+      </div>
+      <hr />
+      <div id="score" class="scoreboard-box">
+        <h1 id="player-score" class="score"></h1>
+        <h1 id="computer-score" class="score"></h1>
+      </div>
+      <div id="message-box" class="scoreboard-box">
+        <h3 id="message">Test Message</h3>
+      </div>
     </div>
   </body>
 </html>

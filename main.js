@@ -1,98 +1,100 @@
-let playerSelection;
-let computerSelection;
-let playerScore = 0;
-let computerScore = 0;
+function setupGame() {
+  uiElements = assignDomElements();
+  score = startScoreboard();
+  updateScreen(score);
+}
 
-const choices = {
-  Rock: "rock",
-  Paper: "paper",
-  Scissors: "scissors",
-};
+function updateScreen(score) {
+  uiElements.playerScore.textContent = score.player;
+  uiElements.computerScore.textContent = score.computer;
+  uiElements.message.textContent = score.messageText;
+}
 
-const players = {
-  Player: "player",
-  Computer: "computer",
-};
+function startScoreboard() {
+  let score = {
+    player: 0,
+    computer: 0,
+    winner: "",
+    messageText: "Choose Rock, Paper, or Scissors...",
+    champion: null,
+  };
+  return score;
+}
 
-function getComputerChoice(choices) {
-  choices = Object.values(choices);
-  return choices[Math.floor(Math.random() * choices.length)];
+function assignDomElements() {
+  let uiElements = {
+    rock: document.getElementById("rock"),
+    paper: document.getElementById("paper"),
+    scissors: document.getElementById("scissors"),
+    box: document.getElementById("box"),
+    playerScore: document.getElementById("player-score"),
+    computerScore: document.getElementById("computer-score"),
+    message: document.getElementById("message"),
+  };
+
+  uiElements.box.addEventListener("click", function (e) {
+    if (e.target.id == uiElements.box.id) {
+      return;
+    }
+    playRound(e.target.id);
+  });
+
+  return uiElements;
 }
 
 function getWinner(playerSelection, computerSelection) {
   if (playerSelection == computerSelection) {
-    return null;
+    return "tie";
   }
-  if (
-    playerSelection == choices.Rock &&
-    computerSelection == choices.Scissors
-  ) {
-    return players.Player;
-  } else if (
-    playerSelection == choices.Paper &&
-    computerSelection == choices.Rock
-  ) {
-    return players.Player;
-  } else if (
-    playerSelection == choices.Scissors &&
-    computerSelection == choices.Paper
-  ) {
-    return players.Player;
-  } else return players.Computer;
-}
-
-function updateScore() {
-  winner == players.Player ? playerScore++ : computerScore++;
-}
-
-function playRound() {
-  computerSelection = getComputerChoice(choices);
-  while (!playerSelection) {
-    let rawInput = prompt(
-      "Please choose one of the following options\nRock\nPaper\nScissors"
-    ).toLowerCase();
-
-    switch (rawInput) {
-      case "rock":
-        playerSelection = choices.Rock;
-        break;
-      case "paper":
-        playerSelection = choices.Paper;
-        break;
-      case "scissors":
-        playerSelection = choices.Scissors;
-        break;
-      default: {
-        alert("Please choose on of the options.");
-        break;
-      }
-    }
-  }
-
-  winner = getWinner(playerSelection, computerSelection);
-  console.log(`Player chose ${playerSelection}`);
-  console.log(`Computer chose ${computerSelection}`);
-  if (winner) {
-    console.log(`The winner is... ${winner}`);
-    updateScore(winner);
+  if (playerSelection == "rock" && computerSelection == "scissors") {
+    score.player++;
+    return "player";
+  } else if (playerSelection == "paper" && computerSelection == "rock") {
+    score.player++;
+    return "player";
+  } else if (playerSelection == "scissors" && computerSelection == "paper") {
+    score.player++;
+    return "player";
   } else {
-    console.log("It was a TIE!");
+    score.computer++;
+    return "computer";
   }
-  console.table({
-    PLAYER: "SCORE",
-    Player: playerScore,
-    Computer: computerScore,
-  });
-  winner = null;
-  playerSelection = null;
-  computerSelection = null;
 }
 
-function game() {
-  while (playerScore < 5 ?? computerScore < 5) {
-    playRound();
+function updateMessage(winner) {
+  switch (winner) {
+    case "player":
+      return "Player Wins!";
+    case "computer":
+      return "Computer Wins!";
+    case "tie":
+      return "Tie! Try Again...";
   }
-  console.log(`${playerScore > computerScore ? "PLAYER" : "COMPUTER"} wins!`);
 }
 
-game();
+function checkChampion(score) {
+  if (score.player == 5) {
+    return "Player";
+  } else if (score.computer == 5) {
+    return "Computer";
+  }
+}
+
+function playRound(playerSelection) {
+  computerSelection = ["rock", "paper", "scissors"][
+    Math.floor(Math.random() * 3)
+  ];
+  score.winner = getWinner(playerSelection, computerSelection);
+  score.messageText = updateMessage(score.winner);
+  updateScreen(score);
+  champion = checkChampion(score);
+  if (champion != null) {
+    score.messageText = "The Final Champion is... " + champion + "!";
+    updateScreen(score);
+    uiElements.rock.disabled = true;
+    uiElements.paper.disabled = true;
+    uiElements.scissors.disabled = true;
+  }
+}
+
+setupGame();
